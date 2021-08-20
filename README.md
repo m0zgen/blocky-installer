@@ -1,5 +1,15 @@
 # Blocky installer
 
+## What is Blocky
+
+Blocky is a DNS proxy and ad-blocker for the local network written in Go.
+
+Official repository:
+* https://github.com/0xERR0R/blocky.git
+* Official [installation](https://0xerr0r.github.io/blocky/installation/) manual
+
+## Installer features
+
 `installer.sh` it is a bash script for install [Blocky](https://github.com/0xERR0R/blocky.git) to:
 
 * CentOS/Fedora Linux
