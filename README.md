@@ -1,6 +1,6 @@
 # Blocky installer
 
-`installer.sh` it is a bash script for install Blocky to:
+`installer.sh` it is a bash script for install [Blocky](https://github.com/0xERR0R/blocky.git) to:
 
 * CentOS/Fedora Linux
 * Blocky is installed as systemctl unit service to `/opt/blocky` catalog as default. 
