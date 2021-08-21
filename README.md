@@ -64,5 +64,10 @@ Additionally you can install Prometheus stack to you own CentOS 8 server:
 See more info on this repository:
 * https://github.com/m0zgen/install-prometheus-stack 
 
+## DNS Testing
+
+You can define DNS servers list and will test response speed with statistics - average, min, max response time:
+* https://github.com/m0zgen/dns-tester 
+
 ### TODO's
-# TODO add diff compare procedure fro syncing
+TODO add diff compare procedure fro syncing
