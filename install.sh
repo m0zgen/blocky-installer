@@ -164,6 +164,7 @@ checkDistro() {
   elif [ -e /etc/fedora-release ]; then
       DISTRO=`cat /etc/fedora-release | awk '{print ($1,$3~/^[0-9]/?$3:$4)}'`
       RPM=1
+      FEDORA=1
   elif [ -e /etc/os-release ]; then
     DISTRO=`lsb_release -d | awk -F"\t" '{print $2}'`
     RPM=0
@@ -179,7 +180,7 @@ getDate() {
 }
 
 # Install core packages
-centos_installs() {
+rpm_installs() {
   yum install wget net-tools git yum-utils tar rsync -y -q -e 0
 }
 
@@ -496,10 +497,16 @@ init_rpm_auto() {
     fi
   fi
 
-  Info "$ON_CHECK" "Run CentOS installer..."
+  Info "$ON_CHECK" "Run RPM installer..."
+
+  if [[ "$FEDORA" -eq "1" ]]; then
+    echo -e "[${GREEN}✓${NC}] Install Fedora packages"
+    rpm_installs
+  fi
+  
   if [[ "$RPM" -eq "1" ]]; then
     echo -e "[${GREEN}✓${NC}] Install CentOS packages"
-    centos_installs
+    rpm_installs
   fi
 
   download_blocky_auto
@@ -557,7 +564,7 @@ init_rpm() {
       Info "$ON_CHECK" "Run CentOS installer..."
       if [[ "$RPM" -eq "1" ]]; then
         echo -e "[${GREEN}✓${NC}] Install CentOS packages"
-        centos_installs
+        rpm_installs
       fi
 
       download_blocky
