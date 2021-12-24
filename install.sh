@@ -485,6 +485,8 @@ init_rpm_auto() {
 
     if (systemctl is-active --quiet systemd-resolved); then
           Warn "$ON_CHECK" "Systemd-resolve possible using port"
+          Info "$ON_CHECK" "Disabling Systemd-resolved"
+          dusable_resolved_unit
     fi
 
     Info "$ON_CHECK" "Run Blocky installer"
