@@ -282,7 +282,7 @@ check_software() {
 
   if [[ "$_AUTO" -eq "1" ]]; then
       if ! type "$1" >/dev/null 2>&1; then
-            git clone https://github.com/m0zgen/$2.git $_DESTINATION/$2
+            git clone --depth=1 https://github.com/m0zgen/$2.git $_DESTINATION/$2
             $_DESTINATION/$2/install.sh
           else
             Info "$ON_CHECK" "$1 already installed"
@@ -291,7 +291,7 @@ check_software() {
     if confirm "Install $1? (y/n or enter)"; then
 
         if ! type "$1" >/dev/null 2>&1; then
-          git clone https://github.com/m0zgen/$2.git $_DESTINATION/$2
+          git clone --depth=1 https://github.com/m0zgen/$2.git $_DESTINATION/$2
           $_DESTINATION/$2/install.sh
         else
           Info "$ON_CHECK" "$1 already installed"
