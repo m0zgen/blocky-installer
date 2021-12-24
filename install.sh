@@ -64,6 +64,28 @@ space() {
 # Set params and usage
 # ---------------------------------------------------\
 
+splash() {
+  echo "
+
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+_/                                                              _/
+_/                                                              _/
+_/       _/        _/                      _/                   _/
+_/      _/_/_/    _/    _/_/      _/_/_/  _/  _/    _/    _/    _/
+_/     _/    _/  _/  _/    _/  _/        _/_/      _/    _/     _/
+_/    _/    _/  _/  _/    _/  _/        _/  _/    _/    _/      _/
+_/   _/_/_/    _/    _/_/      _/_/_/  _/    _/    _/_/_/       _/
+_/                                                    _/        _/
+_/                                               _/_/           _/
+_/                                                              _/
+_/                                                              _/
+_/  Blocky Installer. Version: 0.8                              _/
+_/                                                              _/
+_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
+
+  "
+}
+
 # Help information
 usage() {
 
@@ -287,6 +309,10 @@ install_additional_software() {
   check_software "certbot" "install-certbot"
   check_software "nginx" "install-nginx"
 
+  # Read permission for regular users
+  # chmod -R 755 /etc/letsencrypt/live/
+  # chmod -R 755 /etc/letsencrypt/archive/
+
 }
 
 # Download latest blocky release from official repo
@@ -401,6 +427,10 @@ download_blocky() {
   fi
 }
 
+dusable_resolved_unit() {
+  systemctl disable --now systemd-resolved.service
+}
+
 set_hostname() {
   read -p "Setup new host name: " answer
   hostnamectl set-hostname $answer
@@ -493,6 +523,13 @@ init_rpm() {
 
         if (systemctl is-active --quiet systemd-resolved); then
               Warn "$ON_CHECK" "Systemd-resolve possible using port"
+
+              if confirm " $ON_CHECK Disable? (y/n or enter for skip)"; then
+                  dusable_resolved_unit
+              else
+                Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
+                exit 1
+              fi
         fi
 
         if confirm " $ON_CHECK Continue? (y/n or enter)"; then
@@ -544,6 +581,8 @@ init_rpm() {
 
 # Inits
 # ---------------------------------------------------\
+
+# splash
 
 if [[ "$_EXPORT" -eq "1" ]]; then
     echo "Export configs!"
