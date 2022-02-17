@@ -163,8 +163,7 @@ checkDistro() {
       RPM=1
   elif [ -e /etc/fedora-release ]; then
       DISTRO=`cat /etc/fedora-release | awk '{print ($1,$3~/^[0-9]/?$3:$4)}'`
-      RPM=1
-      FEDORA=1
+      RPM=2
   elif [ -e /etc/os-release ]; then
     DISTRO=`lsb_release -d | awk -F"\t" '{print $2}'`
     RPM=0
@@ -428,7 +427,7 @@ download_blocky() {
   fi
 }
 
-dusable_resolved_unit() {
+disable_resolved_unit() {
   systemctl disable --now systemd-resolved.service
 }
 
@@ -487,7 +486,7 @@ init_rpm_auto() {
     if (systemctl is-active --quiet systemd-resolved); then
           Warn "$ON_CHECK" "Systemd-resolve possible using port"
           Info "$ON_CHECK" "Disabling Systemd-resolved"
-          dusable_resolved_unit
+          disable_resolved_unit
     fi
 
     Info "$ON_CHECK" "Run Blocky installer"
@@ -498,14 +497,14 @@ init_rpm_auto() {
   fi
 
   Info "$ON_CHECK" "Run RPM installer..."
-
-  if [[ "$FEDORA" -eq "1" ]]; then
-    echo -e "[${GREEN}✓${NC}] Install Fedora packages"
-    rpm_installs
-  fi
   
   if [[ "$RPM" -eq "1" ]]; then
     echo -e "[${GREEN}✓${NC}] Install CentOS packages"
+    rpm_installs
+  fi
+
+  if [[ "$RPM" -eq "2" ]]; then
+    echo -e "[${GREEN}✓${NC}] Install Fedora packages"
     rpm_installs
   fi
 
@@ -534,7 +533,7 @@ init_rpm() {
               Warn "$ON_CHECK" "Systemd-resolve possible using port"
 
               if confirm " $ON_CHECK Disable? (y/n or enter for skip)"; then
-                  dusable_resolved_unit
+                  disable_resolved_unit
               else
                 Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
                 exit 1
@@ -561,9 +560,15 @@ init_rpm() {
         set_hostname
       fi
 
-      Info "$ON_CHECK" "Run CentOS installer..."
       if [[ "$RPM" -eq "1" ]]; then
+        Info "$ON_CHECK" "Run CentOS installer..."
         echo -e "[${GREEN}✓${NC}] Install CentOS packages"
+        rpm_installs
+      fi
+
+      if [[ "$RPM" -eq "2" ]]; then
+        Info "$ON_CHECK" "Run Fedora installer..."
+        echo -e "[${GREEN}✓${NC}] Install Fedora packages"
         rpm_installs
       fi
 
