@@ -37,6 +37,7 @@ _Note: All features tested. deployed and using on CentOS 8_
   * Cloudflared
   * Cerbot
   * Nginx
+* Add restarter script
 
 ## Sync configs (testing)
 
