@@ -602,6 +602,10 @@ uninstall_blocky() {
         systemctl disable --now blocky.service
         rm -rf /etc/systemd/system/blocky.service
       fi
+
+      if is_file $RESTARTER; then
+        rm -rf $RESTARTER
+      fi
       
       rm -rf /opt/blocky
       rm -rf /usr/local/sbin/restart-bld.sh
