@@ -174,6 +174,26 @@ checkDistro() {
   fi
 }
 
+# Checking dirs
+is_directory()
+{
+    if [ -d "${1}" ]; then
+        true; return
+    else
+        false; return
+    fi
+}
+
+# Checking files
+is_file()
+{
+    if [ -f "${1}" ]; then
+        true; return
+    else
+        false; return
+    fi
+}
+
 # get Actual date
 getDate() {
   date '+%d-%m-%Y_%H-%M-%S'
@@ -512,24 +532,6 @@ export_configs() {
 
 # Uninstall blocky
 # ---------------------------------------------------\
-
-is_directory()
-{
-    if [ -d "${1}" ]; then
-        true; return
-    else
-        false; return
-    fi
-}
-
-is_file()
-{
-    if [ -f "${1}" ]; then
-        true; return
-    else
-        false; return
-    fi
-}
 
 uninstall_blocky() {
 
