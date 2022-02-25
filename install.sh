@@ -102,6 +102,7 @@ while [[ "$#" -gt 0 ]]; do
         -e|--export) _EXPORT=1; ;;
 		    -a|--auto) _AUTO=1; ;;
 		    -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
+        -u|--uninstall) _UNINSTALL=1; ;;
 		    -h|--help) usage ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
@@ -504,6 +505,36 @@ export_configs() {
   mv blocky_$SERVER_NAME.tar.gz ~/
 }
 
+uninstall_blocky() {
+  Info "$ON_CHECK" "Blocky uninstaller is starting..."
+  if confirm " $ON_CHECK Unstall blocky (will be remove all configs and etc)? (y/n or enter)"; then
+
+    Info "$ON_CHECK" "Checking existing installation..."
+
+    if [[ -d /opt/blocky ]] || [[ -f /etc/systemd/system/blocky.service ]]; then
+      
+      Info "$ON_CHECK" "Disable Blocky service"
+      systemctl disable --now blocky.service
+      rm -rf /etc/systemd/system/blocky.service
+      rm -rf /opt/blocky
+      rm -rf /usr/local/sbin/restart-bld.sh
+      userdel -r -f -Z $_APP_USER_NAME
+
+      if [[ -d /opt/nginx ]]; then
+        
+        if confirm " $ON_CHECK Unstall nginx (will be remove all configs and etc)? (y/n or enter)"; then
+            systemctl disable --now nginx.service
+            yum erase nginx -y
+            rm -rf /opt/nginx
+        else
+
+      fi
+
+    fi
+
+  else
+}
+
 # Install blocky
 # ---------------------------------------------------\
 
@@ -597,6 +628,9 @@ elif [[ "$_AUTO" -eq "1" ]]; then
 elif [[ "$_RESTORE_PERMISSIONS" -eq "1" ]]; then
     echo "Restore permissions"
     set_permissions
+elif [[ "$_UNINSTALL" -eq "1" ]]; then
+    echo "Uninstall Blocky"
+    uninstall_blocky
 else
     init_rpm
 fi
