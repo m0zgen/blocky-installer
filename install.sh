@@ -338,14 +338,24 @@ install_additional_software() {
 }
 
 backup_blocky() {
-    local backup_folder=/opt/blocky_backup_$(getDate)
-    mkdir -p $backup_folder
-    mv $_DESTINATION $backup_folder
 
-    if is_directory "/etc/nginx"; then
-      cp /etc/nginx/nginx.conf
-      cp -r /etc/nginx/conf.d
+    if is_directory "/opt/blocky"; then
+      local backup_folder=/opt/blocky_backup_$(getDate)
+
+      Info "$ON_CHECK" "Blovky will be backup to: $backup_folder"
+
+      mkdir -p $backup_folder
+      mv $_DESTINATION $backup_folder
+
+      if is_directory "/etc/nginx"; then
+        cp /etc/nginx/nginx.conf
+        cp -r /etc/nginx/conf.d
+      fi
+    else
+      Warn "$ON_ERROR" "Blocky does not found. Exit. Bye."
+      exit 1
     fi
+    
 }
 
 # Download latest blocky release from official repo
