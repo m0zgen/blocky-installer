@@ -258,6 +258,27 @@ httpPort: 4000
 _EOF_
 }
 
+# Create restarter script
+create_restarter_script() {
+# Config
+# https://github.com/0xERR0R/blocky/blob/development/docs/installation.md
+cat > /usr/local/sbin/restart-blocky.sh <<_EOF_
+#!/bin/bash
+# Sys env / paths / etc
+# -------------------------------------------------------------------------------------------\
+PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+
+chown -R blockyusr:blockyusr /opt/blocky/
+systemctl stop blocky
+sleep 3
+setcap cap_net_bind_service=ep /opt/blocky/blocky
+systemctl start blocky
+_EOF_
+
+chmod +x /usr/local/sbin/restart-blocky.sh
+}
+
 # Create systemd unit
 create_systemd_config() {
 # Systemd unit
@@ -639,6 +660,7 @@ init_rpm_auto() {
   create_APP_USER_NAME
   check_53
   create_systemd_config
+  create_restarter_script
 
   install_additional_software
 
@@ -672,6 +694,7 @@ init_rpm() {
       create_APP_USER_NAME
       check_53
       create_systemd_config
+      create_restarter_script
 
       if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
           install_additional_software
