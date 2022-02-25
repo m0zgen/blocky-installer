@@ -342,14 +342,14 @@ backup_blocky() {
     if is_directory "/opt/blocky"; then
       local backup_folder=/opt/blocky_backup_$(getDate)
 
-      Info "$ON_CHECK" "Blovky will be backup to: $backup_folder"
+      Info "$ON_CHECK" "Blocky will be backup to: $backup_folder"
 
       mkdir -p $backup_folder
       mv $_DESTINATION $backup_folder
 
       if is_directory "/etc/nginx"; then
-        cp /etc/nginx/nginx.conf
-        cp -r /etc/nginx/conf.d
+        cp /etc/nginx/nginx.conf $backup_folder/
+        cp -r /etc/nginx/conf.d $backup_folder/
       fi
     else
       Warn "$ON_ERROR" "Blocky does not found. Exit. Bye."
