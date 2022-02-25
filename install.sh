@@ -505,7 +505,11 @@ export_configs() {
   mv blocky_$SERVER_NAME.tar.gz ~/
 }
 
+# Uninstall blocky
+# ---------------------------------------------------\
+
 uninstall_blocky() {
+
   Info "$ON_CHECK" "Blocky uninstaller is starting..."
   if confirm " $ON_CHECK Unstall blocky (will be remove all configs and etc)? (y/n or enter)"; then
 
@@ -526,7 +530,7 @@ uninstall_blocky() {
             systemctl disable --now nginx.service
             yum erase nginx -y
             rm -rf /opt/nginx
-        else
+        fi
 
       fi
 
