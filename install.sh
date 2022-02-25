@@ -537,6 +537,9 @@ uninstall_blocky() {
     fi
 
   else
+    Info "$ON_CHECK" "Ok. Exit. Bye..."
+    Exit 1
+
 }
 
 # Install blocky
