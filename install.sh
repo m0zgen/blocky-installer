@@ -104,6 +104,7 @@ while [[ "$#" -gt 0 ]]; do
 		    -a|--auto) _AUTO=1; ;;
 		    -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
         -b|--backup) _BACKUP=1; ;;
+        -c|--check) _CHECK=1; ;;
         -u|--uninstall) _UNINSTALL=1; ;;
 		    -h|--help) usage ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
@@ -738,6 +739,9 @@ elif [[ "$_RESTORE_PERMISSIONS" -eq "1" ]]; then
 elif [[ "$_BACKUP" -eq "1" ]]; then
     echo "Backup Blocky"
     backup_blocky
+elif [[ "$_CHECK" -eq "1" ]]; then
+    echo "Self checking Blocky"
+    self_checking
 elif [[ "$_UNINSTALL" -eq "1" ]]; then
     echo "Uninstall Blocky"
     uninstall_blocky
