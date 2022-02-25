@@ -345,7 +345,7 @@ backup_blocky() {
       Info "$ON_CHECK" "Blocky will be backup to: $backup_folder"
 
       mkdir -p $backup_folder
-      mv $_DESTINATION $backup_folder
+      cp -r $_DESTINATION $backup_folder/
 
       if is_directory "/etc/nginx"; then
         cp /etc/nginx/nginx.conf $backup_folder/
