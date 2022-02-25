@@ -374,6 +374,7 @@ download_blocky() {
   if [[ ! -f $_DESTINATION/blocky ]]; then
 
    Info "$ON_CHECK" "Download latest Blocky relese..."
+
     mkdir -p $_DESTINATION/logs
     cd $_DESTINATION
     
@@ -434,6 +435,10 @@ download_blocky() {
 
 disable_resolved_unit() {
   systemctl disable --now systemd-resolved.service
+}
+
+enable_resolved_unit() {
+  systemctl enable --now systemd-resolved.service
 }
 
 check_53() {
@@ -508,25 +513,56 @@ export_configs() {
 # Uninstall blocky
 # ---------------------------------------------------\
 
+is_directory()
+{
+    if [ -d "${1}" ]; then
+        true; return
+    else
+        false; return
+    fi
+}
+
+is_file()
+{
+    if [ -d "${1}" ]; then
+        true; return
+    else
+        false; return
+    fi
+}
+
 uninstall_blocky() {
 
   Info "$ON_CHECK" "Blocky uninstaller is starting..."
-  if confirm " $ON_CHECK Unstall blocky (will be remove all configs and etc)? (y/n or enter)"; then
+  if confirm " $ON_CHECK Uninstall blocky (will be remove all configs and etc)? (y/n or enter)"; then
 
     Info "$ON_CHECK" "Checking existing installation..."
 
-    if [[ -d /opt/blocky ]] || [[ -f /etc/systemd/system/blocky.service ]]; then
-      
+    if is_directory "/opt/blocky"; then
+
+      Warn "$ON_CHECK" "Blocky found. Uninstall..."
       Info "$ON_CHECK" "Disable Blocky service"
-      systemctl disable --now blocky.service
-      rm -rf /etc/systemd/system/blocky.service
+
+      if is_file "/etc/systemd/system/blocky.service"; then
+        systemctl disable --now blocky.service
+        rm -rf /etc/systemd/system/blocky.service
+      fi
+      
       rm -rf /opt/blocky
       rm -rf /usr/local/sbin/restart-bld.sh
       userdel -r -f -Z $_APP_USER_NAME
 
+      if is_directory "/etc/cloudflared"; then
+        if confirm " $ON_CHECK Uninstall Cloudflared (will be remove all configs and etc)? (y/n or enter)"; then
+          systemctl disable --now cloudflared.service
+          yum erase cloudflared -y
+          rm -rf /etc/cloudflared
+        fi
+      fi
+
       if [[ -d /opt/nginx ]]; then
         
-        if confirm " $ON_CHECK Unstall nginx (will be remove all configs and etc)? (y/n or enter)"; then
+        if confirm " $ON_CHECK Uninstall nginx (will be remove all configs and etc)? (y/n or enter)"; then
             systemctl disable --now nginx.service
             yum erase nginx -y
             rm -rf /opt/nginx
@@ -534,11 +570,16 @@ uninstall_blocky() {
 
       fi
 
+      enable_resolved_unit
+
+    else
+      Warn "$ON_CHECK" "Blocky does not found on this computer. Exit."
+      exit 1
     fi
 
   else
     Info "$ON_CHECK" "Ok. Exit. Bye..."
-    Exit 1
+    exit 1
   fi
 }
 
