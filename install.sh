@@ -80,7 +80,7 @@ _/                                                    _/        _/
 _/                                               _/_/           _/
 _/                                                              _/
 _/                                                              _/
-_/  Blocky Installer. Version: 0.8                              _/
+_/  Blocky Installer. Version: 1.2                              _/
 _/                                                              _/
 _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
@@ -534,6 +534,7 @@ check_53() {
         fi
       fi
     else
+      enable_resolved_unit
       echo -e "[${RED}✓${NC}] Blocky installer exit. Bye."
       exit 1
     fi
@@ -558,6 +559,12 @@ self_checking() {
     Info "$ON_CHECK" "Service $_APP_NAME is running"
   else
     Error "$ON_CHECK" "Service $_APP_NAME does not running"
+  fi
+
+  if is_file $RESTARTER; then
+    Info "$ON_CHECK" "You can restart blocky service with $RESTARTER script"
+  else
+    Error "$ON_CHECK" "Restarter script $RESTARTER does not found"
   fi
 
 }
