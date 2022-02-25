@@ -17,6 +17,7 @@ _BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | g
 
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
 SERVER_NAME=$(hostname)
+RESTARTER=/usr/local/sbin/restart-blocky.sh
 
 # Output messages
 # ---------------------------------------------------\
@@ -262,7 +263,7 @@ _EOF_
 create_restarter_script() {
 # Config
 # https://github.com/0xERR0R/blocky/blob/development/docs/installation.md
-cat > /usr/local/sbin/restart-blocky.sh <<_EOF_
+cat > $RESTARTER <<_EOF_
 #!/bin/bash
 # Sys env / paths / etc
 # -------------------------------------------------------------------------------------------\
@@ -276,7 +277,7 @@ setcap cap_net_bind_service=ep /opt/blocky/blocky
 systemctl start blocky
 _EOF_
 
-chmod +x /usr/local/sbin/restart-blocky.sh
+chmod +x $RESTARTER
 }
 
 # Create systemd unit
@@ -416,6 +417,7 @@ download_blocky_auto() {
 
     Info "${GREEN}✓${NC}" "Update blocky systemd config.."
     create_systemd_config
+    create_restarter_script
 
     # DONE - Checks user already exists
 
