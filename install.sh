@@ -102,6 +102,7 @@ while [[ "$#" -gt 0 ]]; do
         -e|--export) _EXPORT=1; ;;
 		    -a|--auto) _AUTO=1; ;;
 		    -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
+        -b|--backup) _BACKUP=1; ;;
         -u|--uninstall) _UNINSTALL=1; ;;
 		    -h|--help) usage ;;
         *) echo "Unknown parameter passed: $1"; exit 1 ;;
@@ -336,6 +337,17 @@ install_additional_software() {
 
 }
 
+backup_blocky() {
+    local backup_folder=/opt/blocky_backup_$(getDate)
+    mkdir -p $backup_folder
+    mv $_DESTINATION $backup_folder
+
+    if is_directory "/etc/nginx"; then
+      cp /etc/nginx/nginx.conf
+      cp -r /etc/nginx/conf.d
+    fi
+}
+
 # Download latest blocky release from official repo
 download_blocky_auto() {
 
@@ -355,9 +367,7 @@ download_blocky_auto() {
       sleep 2
     fi
 
-    local backup_folder=/opt/blocky_backup_$(getDate)
-    mkdir -p $backup_folder
-    mv $_DESTINATION $backup_folder
+    backup_folder
 
     mkdir -p $_DESTINATION/logs
     cd $_DESTINATION
@@ -681,6 +691,9 @@ elif [[ "$_AUTO" -eq "1" ]]; then
 elif [[ "$_RESTORE_PERMISSIONS" -eq "1" ]]; then
     echo "Restore permissions"
     set_permissions
+elif [[ "$_BACKUP" -eq "1" ]]; then
+    echo "Backup Blocky"
+    backup_blocky
 elif [[ "$_UNINSTALL" -eq "1" ]]; then
     echo "Uninstall Blocky"
     uninstall_blocky
