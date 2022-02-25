@@ -508,7 +508,39 @@ export_configs() {
 # Uninstall blocky
 # ---------------------------------------------------\
 
+uninstall_blocky() {
 
+  Info "$ON_CHECK" "Blocky uninstaller is starting..."
+  if confirm " $ON_CHECK Unstall blocky (will be remove all configs and etc)? (y/n or enter)"; then
+
+    Info "$ON_CHECK" "Checking existing installation..."
+
+    if [[ -d /opt/blocky ]] || [[ -f /etc/systemd/system/blocky.service ]]; then
+      
+      Info "$ON_CHECK" "Disable Blocky service"
+      systemctl disable --now blocky.service
+      rm -rf /etc/systemd/system/blocky.service
+      rm -rf /opt/blocky
+      rm -rf /usr/local/sbin/restart-bld.sh
+      userdel -r -f -Z $_APP_USER_NAME
+
+      if [[ -d /opt/nginx ]]; then
+        
+        if confirm " $ON_CHECK Unstall nginx (will be remove all configs and etc)? (y/n or enter)"; then
+            systemctl disable --now nginx.service
+            yum erase nginx -y
+            rm -rf /opt/nginx
+        fi
+
+      fi
+
+    fi
+
+  else
+    Info "$ON_CHECK" "Ok. Exit. Bye..."
+    Exit 1
+  fi
+}
 
 # Install blocky
 # ---------------------------------------------------\
