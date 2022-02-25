@@ -524,7 +524,7 @@ is_directory()
 
 is_file()
 {
-    if [ -d "${1}" ]; then
+    if [ -f "${1}" ]; then
         true; return
     else
         false; return
@@ -541,16 +541,19 @@ uninstall_blocky() {
     if is_directory "/opt/blocky"; then
 
       Warn "$ON_CHECK" "Blocky found. Uninstall..."
-      Info "$ON_CHECK" "Disable Blocky service"
 
       if is_file "/etc/systemd/system/blocky.service"; then
+        Info "$ON_CHECK" "Disable Blocky service"
         systemctl disable --now blocky.service
         rm -rf /etc/systemd/system/blocky.service
       fi
       
       rm -rf /opt/blocky
       rm -rf /usr/local/sbin/restart-bld.sh
-      userdel -r -f -Z $_APP_USER_NAME
+
+      if is_directory "/home/$_APP_USER_NAME"; then
+        userdel -r -f -Z $_APP_USER_NAME
+      fi
 
       if is_directory "/etc/cloudflared"; then
         if confirm " $ON_CHECK Uninstall Cloudflared (will be remove all configs and etc)? (y/n or enter)"; then
@@ -560,7 +563,7 @@ uninstall_blocky() {
         fi
       fi
 
-      if [[ -d /opt/nginx ]]; then
+      if is_directory "/etc/nginx"; then
         
         if confirm " $ON_CHECK Uninstall nginx (will be remove all configs and etc)? (y/n or enter)"; then
             systemctl disable --now nginx.service
