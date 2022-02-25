@@ -351,6 +351,8 @@ backup_blocky() {
         cp /etc/nginx/nginx.conf $backup_folder/
         cp -r /etc/nginx/conf.d $backup_folder/
       fi
+
+      Info "$ON_CHECK" "Done!"
     else
       Warn "$ON_ERROR" "Blocky does not found. Exit. Bye."
       exit 1
