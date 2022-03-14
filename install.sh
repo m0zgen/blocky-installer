@@ -211,6 +211,13 @@ getDate() {
 }
 # backup_folder=/opt/blocky_backup_$(getDate)
 
+disable_resolved_unit() {
+  systemctl disable --now systemd-resolved.service
+}
+
+enable_resolved_unit() {
+  systemctl enable --now systemd-resolved.service
+}
 
 # Install core packages
 rpm_installs() {
@@ -482,6 +489,7 @@ download_blocky() {
 
       if (systemctl is-active --quiet $_APP_NAME); then
         systemctl stop $_APP_NAME
+        enable_resolved_unit
         sleep 2
       fi
 
@@ -507,7 +515,9 @@ download_blocky() {
       # TODO - Checks user already exists
 
       Info "${GREEN}✓${NC}" "Restarting blocky.."
-      systemctl restart blocky
+      disable_resolved_unit
+      create_restarter_script
+      $RESTARTER
 
       if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
         if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
@@ -526,14 +536,6 @@ download_blocky() {
       exit 1
     fi
   fi
-}
-
-disable_resolved_unit() {
-  systemctl disable --now systemd-resolved.service
-}
-
-enable_resolved_unit() {
-  systemctl enable --now systemd-resolved.service
 }
 
 check_53() {
