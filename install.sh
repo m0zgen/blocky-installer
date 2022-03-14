@@ -623,7 +623,7 @@ export_configs() {
     tar -zcvf blocky_$SERVER_NAME_$START_DATE.tar.gz $_DESTINATION
   fi
   mv blocky_$SERVER_NAME_$START_DATE.tar.gz ~/
-  Info "$ON_CHECK" "Archive saved to ~/ catalog"
+  Info "$ON_CHECK" "Archive saved to: ~/"
 }
 
 # Uninstall blocky
