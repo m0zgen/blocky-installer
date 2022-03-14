@@ -383,9 +383,11 @@ check_software() {
 # Install Cloudflared, Certbot, Nginx
 install_additional_software() {
 
-  check_software "cloudflared" "install-cloudflared"
-  check_software "certbot" "install-certbot"
-  check_software "nginx" "install-nginx"
+  if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
+    check_software "cloudflared" "install-cloudflared"
+    check_software "certbot" "install-certbot"
+    check_software "nginx" "install-nginx"
+  fi
 
   # Read permission for regular users
   # chmod -R 755 /etc/letsencrypt/live/
@@ -453,13 +455,14 @@ download_blocky_auto() {
     Info "${GREEN}✓${NC}" "Update blocky systemd config.."
     create_systemd_config
     create_restarter_script
-    disable_resolved_unit
 
     # DONE - Checks user already exists
 
     Info "${GREEN}✓${NC}" "Restarting blocky.."
+    disable_resolved_unit
+    sleep 2
     $RESTARTER
-
+    
     install_additional_software
 
     Info "${GREEN}✓${NC}" "Blocky reinstalled"
@@ -520,14 +523,14 @@ download_blocky() {
       create_restarter_script
       $RESTARTER
 
-      if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
-        if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
-            install_additional_software
-        else
-          Info "${GREEN}✓${NC}" "Blocky reinstalled. Bye.."
-          exit 1
-        fi
+
+      if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
+          install_additional_software
+      else
+        Info "${GREEN}✓${NC}" "Blocky reinstalled. Bye.."
+        exit 1
       fi
+
 
       Info "${GREEN}✓${NC}" "Done!"
 
@@ -724,9 +727,7 @@ init_auto() {
   create_systemd_config
   create_restarter_script
 
-  if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
-    install_additional_software
-  fi
+  install_additional_software
 
   Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
   self_checking
