@@ -93,14 +93,14 @@ _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 # Help information
 usage() {
 
-	Info "Usage" "You can use this script with several parameters:"
-	Info "$ON_CHECK" "./install.sh -e : export configs"
-	Info "$ON_CHECK" "./install.sh -a : Auto-install all software"
+  Info "Usage" "You can use this script with several parameters:"
+  Info "$ON_CHECK" "./install.sh -e : export configs"
+  Info "$ON_CHECK" "./install.sh -a : Auto-install all software"
   Info "$ON_CHECK" "./install.sh -r : Restore permissions to Blocky catalog"
   Info "$ON_CHECK" "./install.sh -b : Backup existing Blocky installation"
   Info "$ON_CHECK" "./install.sh -c : Check existing Blocky"
   Info "$ON_CHECK" "./install.sh -u : Uninstall Blocky"
-	exit 1
+  exit 1
 
 }
 
