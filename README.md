@@ -2,7 +2,7 @@
 
 Supported and tested on distros:
 * CentOS 7/8, Fedora 35 
-* Debian 11
+* Debian 11, Ubuntu 20
 
 ## What is Blocky
 
