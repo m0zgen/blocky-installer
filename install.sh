@@ -83,7 +83,7 @@ _/                                                    _/        _/
 _/                                               _/_/           _/
 _/                                                              _/
 _/                                                              _/
-_/  Blocky Installer. Version: 1.2                              _/
+_/  Blocky Installer. Version: 1.3                              _/
 _/                                                              _/
 _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
 
@@ -433,6 +433,7 @@ download_blocky_auto() {
     if (systemctl is-active --quiet $_APP_NAME); then
       systemctl stop $_APP_NAME
       sleep 2
+      enable_resolved_unit
     fi
 
     backup_blocky
@@ -452,11 +453,11 @@ download_blocky_auto() {
     Info "${GREEN}✓${NC}" "Update blocky systemd config.."
     create_systemd_config
     create_restarter_script
+    disable_resolved_unit
 
     # DONE - Checks user already exists
 
     Info "${GREEN}✓${NC}" "Restarting blocky.."
-    create_restarter_script
     $RESTARTER
 
     install_additional_software
