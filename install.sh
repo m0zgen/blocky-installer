@@ -18,6 +18,8 @@ _BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | g
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
 SERVER_NAME=$(hostname)
 RESTARTER=/usr/local/sbin/restart-blocky.sh
+START_DATE=`date '+%d-%m-%Y_%H-%M-%S'`
+backup_folder=/opt/blocky_backup_$START_DATE
 
 # Output messages
 # ---------------------------------------------------\
@@ -206,8 +208,8 @@ is_file()
 getDate() {
   date '+%d-%m-%Y_%H-%M-%S'
 }
+# backup_folder=/opt/blocky_backup_$(getDate)
 
-backup_folder=/opt/blocky_backup_$(getDate)
 
 # Install core packages
 rpm_installs() {
@@ -374,7 +376,7 @@ install_additional_software() {
 backup_blocky() {
 
     if is_directory "/opt/blocky"; then
-      local backup_folder=/opt/blocky_backup_$(getDate)
+      # local backup_folder=/opt/blocky_backup_$(getDate)
 
       Info "$ON_CHECK" "Blocky will be backup to: $backup_folder"
 
