@@ -16,17 +16,16 @@ Official repository:
 
 `installer.sh` it is a bash script for install [Blocky](https://github.com/0xERR0R/blocky.git) to:
 
-* CentOS/Fedora Linux
-* Blocky is installed as systemctl unit service to `/opt/blocky` catalog as default. 
-* After install Blocky works from regular user.
+* Blocky will installs as systemctl unit service to `/opt/blocky` catalog as default. 
+* After install Blocky works under regular `blockyuser` user.
 
-_Note: All features tested. deployed and using on CentOS 8_
+_Note: All features tested. deployed and using on CentOS 7/8, Fedora 35, Debian 11, Ubuntu 20_
 
 ## Features
 
 * Install from scratch to rpm based distros
   * Steb-by-step installer
-  * Automate installer
+  * Automate installer (CentOS/Fedora)
 * Detect and download latest `blocky` release from official repo
 * Install under simple user
   * New user creation
@@ -37,7 +36,7 @@ _Note: All features tested. deployed and using on CentOS 8_
 * Reinstall `blocky`
 * Uninstall `blocky`
 * Backup `blocky`
-* Install additional software (optionally):
+* Install additional software (optionally for CentOS/Fedora):
   * Cloudflared
   * Cerbot
   * Nginx
