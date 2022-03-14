@@ -175,6 +175,7 @@ checkDistro() {
   elif [ -e /etc/os-release ]; then
     DISTRO=`lsb_release -d | awk -F"\t" '{print $2}'`
     RPM=0
+    DEB=1
   else
       Error "Your distribution is not supported (yet)"
       exit 1
@@ -209,6 +210,10 @@ getDate() {
 # Install core packages
 rpm_installs() {
   yum install wget net-tools git yum-utils tar rsync -y -q -e 0
+}
+
+apt_installs() {
+  apt -y install wget net-tools git tar rsync
 }
 
 # Set permissions to destibation folder
@@ -686,7 +691,35 @@ init_rpm_auto() {
   self_checking
 }
 
-init_rpm() {
+rpm_actions() {
+  rpm_installs
+  download_blocky
+  create_blocky_config
+  create_APP_USER_NAME
+  check_53
+  create_systemd_config
+  create_restarter_script
+
+  if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
+    install_additional_software
+  else
+    self_checking
+    Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
+    exit 1
+  fi
+}
+
+apt_actions() {
+  apt_installs
+  download_blocky
+  create_blocky_config
+  create_APP_USER_NAME
+  check_53
+  create_systemd_config
+  create_restarter_script
+}
+
+init() {
   
   Info "$ON_CHECK" "Blocky installer is starting..."
   if confirm " $ON_CHECK Install blocky? (y/n or enter)"; then
@@ -698,28 +731,19 @@ init_rpm() {
       if [[ "$RPM" -eq "1" ]]; then
         Info "$ON_CHECK" "Run CentOS installer..."
         echo -e "[${GREEN}✓${NC}] Install CentOS packages"
-        
+        rpm_actions
       fi
 
       if [[ "$RPM" -eq "2" ]]; then
         Info "$ON_CHECK" "Run Fedora installer..."
         echo -e "[${GREEN}✓${NC}] Install Fedora packages"
+        rpm_actions
       fi
 
-      rpm_installs
-      download_blocky
-      create_blocky_config
-      create_APP_USER_NAME
-      check_53
-      create_systemd_config
-      create_restarter_script
-
-      if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
-          install_additional_software
-      else
-        self_checking
-        Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
-        exit 1
+      if [[ "$DEB" -eq "1" ]]; then
+        Info "$ON_CHECK" "Run Debian installer..."
+        echo -e "[${GREEN}✓${NC}] Install Debian packages"
+        apt_actions
       fi
 
       self_checking
@@ -754,7 +778,7 @@ elif [[ "$_UNINSTALL" -eq "1" ]]; then
     echo "Uninstall Blocky"
     uninstall_blocky
 else
-    init_rpm
+    init
 fi
 
 
