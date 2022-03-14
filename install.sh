@@ -436,7 +436,8 @@ download_blocky_auto() {
     # DONE - Checks user already exists
 
     Info "${GREEN}✓${NC}" "Restarting blocky.."
-    systemctl restart blocky
+    create_restarter_script
+    $RESTARTER
 
     install_additional_software
 
