@@ -641,9 +641,18 @@ uninstall_blocky() {
       rm -rf /opt/blocky
       rm -rf /usr/local/sbin/restart-bld.sh
 
-      if is_directory "/home/$_APP_USER_NAME"; then
-        userdel -r -f -Z $_APP_USER_NAME
+      if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
+          if is_directory "/home/$_APP_USER_NAME"; then
+            # Delete with SELinux context
+            userdel -r -f -Z $_APP_USER_NAME
+          fi
+        else
+          if is_directory "/home/$_APP_USER_NAME"; then
+            userdel -r -f $_APP_USER_NAME
+          fi
       fi
+
+      
 
       if is_directory "/etc/cloudflared"; then
         if confirm " $ON_CHECK Uninstall Cloudflared (will be remove all configs and etc)? (y/n or enter)"; then
