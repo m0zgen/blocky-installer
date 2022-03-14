@@ -665,7 +665,7 @@ checkDistro
 space
 
 
-init_rpm_auto() {
+init_auto() {
   Info "$ON_CHECK" "Blocky installer is starting..."
 
   Info "$ON_CHECK" "Run RPM installer..."
@@ -695,31 +695,6 @@ init_rpm_auto() {
   if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
     install_additional_software
   fi
-
-  Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
-  self_checking
-}
-
-init_deb_auto() {
-  Info "$ON_CHECK" "Blocky installer is starting..."
-
-  Info "$ON_CHECK" "Run RPM installer..."
-  
-  if [[ "$RPM" -eq "1" ]]; then
-    echo -e "[${GREEN}✓${NC}] Install CentOS packages"
-  fi
-
-  if [[ "$RPM" -eq "2" ]]; then
-    echo -e "[${GREEN}✓${NC}] Install Fedora packages"
-  fi
-
-  apt_installs
-  download_blocky_auto
-  create_blocky_config
-  create_APP_USER_NAME
-  check_53
-  create_systemd_config
-  create_restarter_script
 
   Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
   self_checking
@@ -798,7 +773,7 @@ if [[ "$_EXPORT" -eq "1" ]]; then
     export_configs
 elif [[ "$_AUTO" -eq "1" ]]; then
   echo "Auto install"
-  init_rpm_auto
+  init_auto
 elif [[ "$_RESTORE_PERMISSIONS" -eq "1" ]]; then
     echo "Restore permissions"
     set_permissions
