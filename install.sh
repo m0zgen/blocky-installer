@@ -226,7 +226,7 @@ set_permissions() {
 # Create simple user for blocky
 create_APP_USER_NAME() {
   if [[ $(getent passwd $_APP_USER_NAME) = "" ]]; then
-    useradd $_APP_USER_NAME
+    useradd -m $_APP_USER_NAME
     Info "$ON_CHECK" "User $_APP_USER_NAME is created"
 
     # Generate ssh key for sync configs between servers
@@ -664,7 +664,46 @@ checkDistro
 
 space
 
+init_wrapper() {
+
+}
+
 init_rpm_auto() {
+  Info "$ON_CHECK" "Blocky installer is starting..."
+
+  Info "$ON_CHECK" "Run RPM installer..."
+  
+  if [[ "$RPM" -eq "1" ]]; then
+    echo -e "[${GREEN}✓${NC}] Install CentOS packages"
+    rpm_installs
+  fi
+
+  if [[ "$RPM" -eq "2" ]]; then
+    echo -e "[${GREEN}✓${NC}] Install Fedora packages"
+    rpm_installs
+  fi
+
+  if [[ "$DEB" -eq "1" ]]; then
+    echo -e "[${GREEN}✓${NC}] Install Debian packages"
+    apt_installs
+  fi
+
+  download_blocky_auto
+  create_blocky_config
+  create_APP_USER_NAME
+  check_53
+  create_systemd_config
+  create_restarter_script
+
+  if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
+    install_additional_software
+  fi
+
+  Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
+  self_checking
+}
+
+init_deb_auto() {
   Info "$ON_CHECK" "Blocky installer is starting..."
 
   Info "$ON_CHECK" "Run RPM installer..."
@@ -677,15 +716,13 @@ init_rpm_auto() {
     echo -e "[${GREEN}✓${NC}] Install Fedora packages"
   fi
 
-  rpm_installs
+  apt_installs
   download_blocky_auto
   create_blocky_config
   create_APP_USER_NAME
   check_53
   create_systemd_config
   create_restarter_script
-
-  install_additional_software
 
   Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
   self_checking
