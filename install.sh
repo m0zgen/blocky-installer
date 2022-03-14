@@ -18,6 +18,7 @@ _BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | g
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
 SERVER_NAME=$(hostname)
 RESTARTER=/usr/local/sbin/restart-blocky.sh
+backup_folder=/opt/blocky_backup_$(getDate)
 
 # Output messages
 # ---------------------------------------------------\
@@ -467,7 +468,7 @@ download_blocky() {
         sleep 2
       fi
 
-      local backup_folder=/opt/blocky_backup_$(getDate)
+      # local backup_folder=/opt/blocky_backup_$(getDate)
       mkdir -p $backup_folder
       mv $_DESTINATION $backup_folder
       
