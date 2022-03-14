@@ -411,7 +411,7 @@ download_blocky_auto() {
       sleep 2
     fi
 
-    backup_folder
+    backup_blocky
 
     mkdir -p $_DESTINATION/logs
     cd $_DESTINATION
