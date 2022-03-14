@@ -322,17 +322,20 @@ WantedBy=multi-user.target
 _EOF_
 
 systemctl daemon-reload
+create_restarter_script
+systemctl enable $_APP_NAME
+Info "${GREEN}✓${NC}" "Restarting..."
+$RESTARTER
 
-if [[ ! -f "$SYSTEMD_UNIT" ]]; then
-  systemctl enable --now $_APP_NAME >/dev/null 2>&1
-  Info "${GREEN}✓${NC}" "Blocky enabled as unit service by name - $_APP_NAME"
-else
-  Info "${GREEN}✓${NC}" "Blocky unit is exist - $SYSTEMD_UNIT"
-  Info "${GREEN}✓${NC}" "Restarting..."
-  $RESTARTER
-fi
-
-
+# if [[ ! -f "$SYSTEMD_UNIT" ]]; then
+#   systemctl enable --now $_APP_NAME >/dev/null 2>&1
+#   Info "${GREEN}✓${NC}" "Blocky enabled as unit service by name - $_APP_NAME"
+# else
+#   Info "${GREEN}✓${NC}" "Blocky unit is exist - $SYSTEMD_UNIT"
+#   Info "${GREEN}✓${NC}" "Restarting..."
+#   create_restarter_script
+#   $RESTARTER
+# fi
 
 sleep 2
 
