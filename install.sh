@@ -491,11 +491,13 @@ download_blocky() {
       Info "${GREEN}✓${NC}" "Restarting blocky.."
       systemctl restart blocky
 
-      if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
-          install_additional_software
-      else
-        Info "${GREEN}✓${NC}" "Blocky reinstalled. Bye.."
-        exit 1
+      if [[ "$RPM" -eq "1" ]] || [[ "$RPM" -eq "2" ]]; then
+        if confirm " $ON_CHECK Install additional software? (y/n or enter)"; then
+            install_additional_software
+        else
+          Info "${GREEN}✓${NC}" "Blocky reinstalled. Bye.."
+          exit 1
+        fi
       fi
 
       Info "${GREEN}✓${NC}" "Done!"
