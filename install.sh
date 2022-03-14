@@ -331,6 +331,7 @@ _EOF_
 systemctl daemon-reload
 create_restarter_script
 systemctl enable $_APP_NAME
+disable_resolved_unit
 Info "${GREEN}✓${NC}" "Restarting..."
 $RESTARTER
 
