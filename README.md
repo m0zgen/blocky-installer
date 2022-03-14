@@ -1,5 +1,9 @@
 # Blocky installer
 
+Supported and tested on distros:
+* CentOS 7/8, Fedora 35 
+* Debian 11
+
 ## What is Blocky
 
 Blocky is a DNS proxy and ad-blocker for the local network written in Go.
