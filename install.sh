@@ -107,14 +107,14 @@ usage() {
 # Checks arguments
 while [[ "$#" -gt 0 ]]; do
     case $1 in
-        -e|--export) _EXPORT=1; ;;
-		    -a|--auto) _AUTO=1; ;;
-		    -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
-        -b|--backup) _BACKUP=1; ;;
-        -c|--check) _CHECK=1; ;;
-        -u|--uninstall) _UNINSTALL=1; ;;
-		    -h|--help) usage ;;
-        *) echo "Unknown parameter passed: $1"; exit 1 ;;
+      -e|--export) _EXPORT=1; ;;
+      -a|--auto) _AUTO=1; ;;
+      -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
+      -b|--backup) _BACKUP=1; ;;
+      -c|--check) _CHECK=1; ;;
+      -u|--uninstall) _UNINSTALL=1; ;;
+      -h|--help) usage ;;
+      *) echo "Unknown parameter passed: $1"; exit 1 ;;
     esac
     shift
 done
