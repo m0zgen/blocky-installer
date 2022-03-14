@@ -664,9 +664,6 @@ checkDistro
 
 space
 
-init_wrapper() {
-
-}
 
 init_rpm_auto() {
   Info "$ON_CHECK" "Blocky installer is starting..."
