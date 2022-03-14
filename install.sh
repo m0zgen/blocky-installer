@@ -608,15 +608,22 @@ self_checking() {
 
 export_configs() {
 
-  if [ -f blocky_$SERVER_NAME.tar.gz ]; then
+  if [ -f ~/blocky_$SERVER_NAME_$START_DATE.tar.gz ]; then
 
-      Error "$ON_CHECK" "File exist"
-      rm blocky_$SERVER_NAME.tar.gz
+      Error "$ON_CHECK" "File blocky_$SERVER_NAME_$START_DATE.tar.gz exist!"
+      Error "$ON_CHECK" "Exit. Bye."
+      Exit 1
   fi
 
   cd /opt
-  tar -zcvf blocky_$SERVER_NAME.tar.gz $_DESTINATION /etc/nginx
-  mv blocky_$SERVER_NAME.tar.gz ~/
+
+  if [[ -d /etc/nginx ]]; then
+    tar -zcvf blocky_$SERVER_NAME_$START_DATE.tar.gz $_DESTINATION /etc/nginx
+  else
+    tar -zcvf blocky_$SERVER_NAME_$START_DATE.tar.gz $_DESTINATION
+  fi
+  mv blocky_$SERVER_NAME_$START_DATE.tar.gz ~/
+  Info "$ON_CHECK" "Archive saved to ~/ catalog"
 }
 
 # Uninstall blocky
