@@ -17,6 +17,7 @@ _BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | g
 
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
 SERVER_NAME=$(hostname)
+SYSTEMD_UNIT=/etc/systemd/system/$_APP_NAME.service
 RESTARTER=/usr/local/sbin/restart-blocky.sh
 START_DATE=`date '+%d-%m-%Y_%H-%M-%S'`
 backup_folder=/opt/blocky_backup_$START_DATE
@@ -297,7 +298,7 @@ chmod +x $RESTARTER
 # Create systemd unit
 create_systemd_config() {
 # Systemd unit
-cat > /etc/systemd/system/$_APP_NAME.service <<_EOF_
+cat > $SYSTEMD_UNIT <<_EOF_
 [Unit]
 Description=Blocky is a DNS proxy and ad-blocker
 ConditionPathExists=${_DESTINATION}
@@ -321,8 +322,17 @@ WantedBy=multi-user.target
 _EOF_
 
 systemctl daemon-reload
-systemctl enable --now $_APP_NAME >/dev/null 2>&1
-Info "${GREEN}✓${NC}" "Blocky enabled as unit service by name - $_APP_NAME"
+
+if [[ ! -f "$SYSTEMD_UNIT" ]]; then
+  systemctl enable --now $_APP_NAME >/dev/null 2>&1
+  Info "${GREEN}✓${NC}" "Blocky enabled as unit service by name - $_APP_NAME"
+else
+  Info "${GREEN}✓${NC}" "Blocky unit is exist - $SYSTEMD_UNIT"
+  Info "${GREEN}✓${NC}" "Restarting..."
+  $RESTARTER
+fi
+
+
 
 sleep 2
 
