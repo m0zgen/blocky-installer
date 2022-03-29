@@ -109,6 +109,7 @@ while [[ "$#" -gt 0 ]]; do
     case $1 in
       -e|--export) _EXPORT=1; ;;
       -a|--auto) _AUTO=1; ;;
+      -f|--full) _FULL=1; ;;
       -r|--restore-permission) _RESTORE_PERMISSIONS=1; ;;
       -b|--backup) _BACKUP=1; ;;
       -c|--check) _CHECK=1; ;;
@@ -464,7 +465,10 @@ download_blocky_auto() {
     sleep 2
     $RESTARTER
     
-    install_additional_software
+    if [[ "$_FULL" -eq "1" ]]; then
+      echo "Full stack install"
+      install_additional_software
+    fi
 
     Info "${GREEN}✓${NC}" "Blocky reinstalled"
     Info "${GREEN}✓${NC}" "Done!"
@@ -608,13 +612,6 @@ self_checking() {
 
 export_configs() {
 
-  if [ -f ~/blocky_$SERVER_NAME_$START_DATE.tar.gz ]; then
-
-      Error "$ON_CHECK" "File blocky_$SERVER_NAME_$START_DATE.tar.gz exist!"
-      Error "$ON_CHECK" "Exit. Bye."
-      Exit 1
-  fi
-
   cd /opt
 
   if [[ -d /etc/nginx ]]; then
@@ -735,7 +732,10 @@ init_auto() {
   create_systemd_config
   create_restarter_script
 
-  install_additional_software
+  if [[ "$_FULL" -eq "1" ]]; then
+      echo "Full stack install"
+      install_additional_software
+  fi
 
   Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
   self_checking
