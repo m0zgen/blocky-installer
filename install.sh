@@ -279,6 +279,7 @@ blocking:
       - ads
 port: 53
 httpPort: 4000
+bootstrapDns: 1.1.1.1
 _EOF_
 }
 
