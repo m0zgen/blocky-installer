@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install blocky to CentOS (x86_64)
+# Install Blocky on to CentOS, Fedora, Debian, Ubuntu Linux
 
 set -e
 
