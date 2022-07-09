@@ -548,7 +548,7 @@ download_blocky() {
 
       exit 1
     else
-      Info "${GREEN}✓${NC}" "Reinstall declined. Please check $_DESTINATION folder. Bye.."
+      Info "${GREEN}✓${NC}" "Reinstall declined. Please check $_DESTINATION catalog. Bye.."
       exit 1
     fi
   fi
