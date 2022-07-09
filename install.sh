@@ -231,7 +231,7 @@ apt_installs() {
 
 # Set permissions to destibation folder
 set_permissions() {
-  Info "$ON_CHECK" "Set user $_APP_USER_NAME permissions to $_DESTINATION folder"
+  Info "$ON_CHECK" "Set user $_APP_USER_NAME permissions to $_DESTINATION catalog"
   chown -R $_APP_USER_NAME:$_APP_USER_NAME $_DESTINATION
   setcap cap_net_bind_service=ep $_DESTINATION/blocky
 }
@@ -567,7 +567,7 @@ check_53() {
           if confirm " $ON_CHECK Disable? (y/n or enter for skip)"; then
               disable_resolved_unit
           else
-            Info "${GREEN}$ON_CHECK${NC}" "Blocky installed to $_DESTINATION. Bye.."
+            Info "${GREEN}$ON_CHECK${NC}" "Blocky already installed to $_DESTINATION."
             exit 1
           fi
     fi
