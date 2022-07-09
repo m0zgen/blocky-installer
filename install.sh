@@ -439,7 +439,7 @@ download_blocky_auto() {
     tar xf `ls *.tar.gz`
 
   else
-    Warn "$ON_CHECK" "Folder $_DESTINATION exist! Blocky already installed?"
+    Warn "$ON_CHECK" "Catalog $_DESTINATION exist! Blocky already installed?"
 
     if (systemctl is-active --quiet $_APP_NAME); then
       systemctl stop $_APP_NAME
