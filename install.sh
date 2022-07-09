@@ -266,14 +266,20 @@ create_blocky_config() {
 cat > $_DESTINATION/config.yml <<_EOF_
 upstream:
   default:
-    - 46.182.19.48
-    - 80.241.218.68
-    - tcp-tls:fdns1.dismail.de:853
-    - https://dns.digitale-gesellschaft.ch/dns-query
+    - 1.1.1.1
+    - 8.8.8.8
 blocking:
   blackLists:
     ads:
       - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/dns-blacklist.txt
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/malisious.txt
+    whiteLists:
+      ads:
+        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/whitelist.txt
+        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/microsoft.txt
+        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/google.txt
+        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/regex/common-wl.txt
   clientGroupsBlock:
     default:
       - ads
