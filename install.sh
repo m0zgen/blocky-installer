@@ -274,12 +274,12 @@ blocking:
       - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
       - https://raw.githubusercontent.com/m0zgen/dns-hole/master/dns-blacklist.txt
       - https://raw.githubusercontent.com/m0zgen/dns-hole/master/malisious.txt
-    whiteLists:
-      ads:
-        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/whitelist.txt
-        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/microsoft.txt
-        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/google.txt
-        - https://raw.githubusercontent.com/m0zgen/dns-hole/master/regex/common-wl.txt
+  whiteLists:
+    ads:
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/whitelist.txt
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/microsoft.txt
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/vendors-wl/google.txt
+      - https://raw.githubusercontent.com/m0zgen/dns-hole/master/regex/common-wl.txt
   clientGroupsBlock:
     default:
       - ads
