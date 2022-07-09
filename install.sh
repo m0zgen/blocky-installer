@@ -499,7 +499,7 @@ download_blocky() {
     
   else
 
-    Warn "$ON_CHECK" "Folder $_DESTINATION exist! Blocky already installed?"
+    Warn "$ON_CHECK" "Catalog $_DESTINATION exist! Blocky already installed?"
 
     if confirm " $ON_CHECK Reinstall Blocky? (y/n or enter)"; then
 
