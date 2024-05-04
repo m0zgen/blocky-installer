@@ -13,7 +13,8 @@ SCRIPT_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
 _APP_NAME="blocky"
 _APP_USER_NAME="blockyusr"
 _DESTINATION=/opt/${_APP_NAME}
-_BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | grep browser_download_url | grep "Linux_x86_64" | awk '{print $2}' | tr -d '\"'`
+_ARCH="$(uname -m | sed -e 's/aarch64/arm64/')"
+_BINARY=`curl -s https://api.github.com/repos/0xERR0R/blocky/releases/latest | grep browser_download_url | grep "Linux_${_ARCH}" | awk '{print $2}' | tr -d '\"'`
 
 SERVER_IP=$(hostname -I | cut -d' ' -f1)
 SERVER_NAME=$(hostname)
