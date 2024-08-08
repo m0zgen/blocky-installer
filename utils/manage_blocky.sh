@@ -82,7 +82,6 @@ enable_units() {
         if [ -f $BACKUP_DIR/blocky-delay.service ]; then
             cp $BACKUP_DIR/blocky-delay.service /etc/systemd/system
             echo "Restored blocky-delay.service from backup."
-            enable_unit "blocky-delay.service"
         fi
     fi
 
