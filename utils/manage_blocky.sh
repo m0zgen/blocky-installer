@@ -130,7 +130,7 @@ disable_units() {
 
 }
 
-# Проверка, передан ли аргумент
+# Check if argument is passed
 if [[ -z $1 ]]; then
     echo "Errot: need to pass argument -e (enable) or -d (disable)"
     exit 1
