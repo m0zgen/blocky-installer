@@ -1,0 +1,9 @@
+# Backup catalog
+utils/backup
+
+# IDE files
+.idea
+.vscode
+
+# OS files
+.DS_Store
