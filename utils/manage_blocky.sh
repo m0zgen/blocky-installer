@@ -20,9 +20,9 @@ unit_exists() {
 check_unit_status() {
     local unit_name=$1
     if systemctl is-active --quiet $unit_name; then
-        echo "$unit_name активен."
+        echo "$unit_name active."
     else
-        echo "$unit_name не активен."
+        echo "$unit_name not active."
     fi
 }
 
