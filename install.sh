@@ -232,6 +232,12 @@ rpm_installs() {
 
 apt_installs() {
   apt -y install wget net-tools git tar rsync curl
+  # check if curl exists and install
+  if ! type "curl" >/dev/null 2>&1; then
+    apt -y install curl
+    Info "$ON_CHECK" "Curl installed. Please re-run script. Exit"
+    exit 1
+  fi
 }
 
 # Set permissions to destibation folder
