@@ -253,6 +253,12 @@ create_APP_USER_NAME() {
     useradd -m $_APP_USER_NAME
     Info "$ON_CHECK" "User $_APP_USER_NAME is created"
 
+    # Allow blockyusr to restart blocky service
+    # check if sudoers.d exists
+    if [[ ! -d /etc/sudoers.d ]]; then
+      mkdir /etc/sudoers.d
+    fi
+
     # Generate ssh key for sync configs between servers
     echo "%$_APP_USER_NAME ALL=(ALL) NOPASSWD:/bin/systemctl restart $_APP_NAME,/bin/systemctl stop $_APP_NAME,/bin/systemctl start $_APP_NAME,/bin/systemctl status $_APP_NAME" > /etc/sudoers.d/blockyusr
     su - $_APP_USER_NAME -c "yes ~/.ssh/id_rsa | ssh-keygen -q -t rsa -N '' >/dev/null"
