@@ -231,7 +231,7 @@ rpm_installs() {
 }
 
 apt_installs() {
-  apt -y install wget net-tools git tar rsync
+  apt -y install wget net-tools git tar rsync curl
 }
 
 # Set permissions to destibation folder
