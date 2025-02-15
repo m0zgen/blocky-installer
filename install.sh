@@ -213,11 +213,16 @@ getDate() {
 # backup_folder=/opt/blocky_backup_$(getDate)
 
 disable_resolved_unit() {
-  systemctl disable --now systemd-resolved.service
+  # is systemd-resolved already exist
+  if (systemctl is-active --quiet systemd-resolved); then
+    systemctl disable --now systemd-resolved.service
+  fi
 }
 
 enable_resolved_unit() {
-  systemctl enable --now systemd-resolved.service
+  if systemctl cat systemd-resolved >/dev/null 2>&1; then
+      systemctl enable --now systemd-resolved.service
+  fi
 }
 
 # Install core packages
