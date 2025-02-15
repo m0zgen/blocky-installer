@@ -494,6 +494,8 @@ download_blocky() {
   if [[ ! -f $_DESTINATION/blocky ]]; then
 
    Info "$ON_CHECK" "Download latest Blocky relese..."
+   Info "$ON_CHECK" "Source: $_BINARY"
+   Info "$ON_CHECK" "Destination: $_DESTINATION"
 
     mkdir -p $_DESTINATION/logs
     cd $_DESTINATION
