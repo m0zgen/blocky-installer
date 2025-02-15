@@ -42,22 +42,6 @@ _Note: All features tested. deployed and using on CentOS 7/8, Fedora 35, Debian 
   * Nginx
 * Add restarter script
 
-## Sync configs (testing)
-
-After install Blocky you can use sync feature to download or upload config to remote server over ssh connection with `sync.sh`.
-
-In first run `sync.sh` will ask:
-* Remote server IP
-* Remote server port
-* Remote server ssh user name
-
-Then will try copy ssh key to remote server with `ssh-copy-id`, after that you can run script again and `sync.sh` will copy `cinfig.yml` from remote server to local `/opt/blocky` folder.
-
-You can also configure the scheduler with crontab (as example):
-```bash
-*/30 * * * * /bin/bash /home/blockyusr/sync.sh
-```
-
 ## Install Prometheus Stack
 
 Additionally you can install Prometheus stack to you own CentOS 8 server:

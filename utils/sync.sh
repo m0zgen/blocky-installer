@@ -1,5 +1,6 @@
 #!/bin/bash
 # Sync blocky to CentOS (x86_64)
+# DEPRECATED
 
 set -e
 
